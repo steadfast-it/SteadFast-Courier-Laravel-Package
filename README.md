@@ -27,7 +27,7 @@ This is a Laravel/PHP package for [Steadfast](https://www.steadfast.com.bd/)  Co
 You can install the package via composer:
 
 ```bash
-composer require steadfast/steadfast-courier-laravel-package
+composer require steadfast-courier/steadfast-courier-laravel-package
 ```
 
 

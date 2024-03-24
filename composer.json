@@ -1,5 +1,5 @@
 {
-    "name": "steadfast/steadfast-courier-laravel-package",
+    "name": "steadfast-courier/steadfast-courier-laravel-package",
     "description": "A complate Laravel package for SteadFast Courier Limited",
     "keywords": [
         "SteadFast",
@@ -12,7 +12,7 @@
         {
             "name": "SteadFast",
             "email": "it@steadfast.com.bd",
-            "role": "Developer"
+            "role": "Owner"
         }
     ],
     "require": {
