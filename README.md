@@ -59,7 +59,8 @@ STEADFAST_SECRET_KEY ="your-secret-key"
 
 use SteadFast\SteadFastCourierLaravelPackage\Facades\SteadfastCourier;
 
-$orderData = 
+    $orderData = 
+
     [
 
         'invoice' => '123456',
@@ -81,39 +82,39 @@ $response = SteadfastCourier::placeOrder($orderData);
 
 Response:
 
-{
+    {
 
-    "status": 200,
+        "status": 200,
 
-    "message": "Consignment has been created successfully.",
+        "message": "Consignment has been created successfully.",
 
-    "consignment": {
+        "consignment": {
 
-        "consignment_id": 1424107,
+            "consignment_id": 1424107,
 
-        "invoice": "Aa12-das4",
+            "invoice": "Aa12-das4",
 
-        "tracking_code": "15BAEB8A",
+            "tracking_code": "15BAEB8A",
 
-        "recipient_name": "John Doe",
+            "recipient_name": "John Doe",
 
-        "recipient_phone": "01234567890",
+            "recipient_phone": "01234567890",
 
-        "recipient_address": "Fla# A1,House# 17/1, Road# 3/A, Dhanmondi,Dhaka-1209",
+            "recipient_address": "Fla# A1,House# 17/1, Road# 3/A, Dhanmondi,Dhaka-1209",
 
-        "cod_amount": 1000,
+            "cod_amount": 1000,
 
-        "status": "in_review",
+            "status": "in_review",
 
-        "note": "Deliver within 3PM",
+            "note": "Deliver within 3PM",
 
-        "created_at": "2021-03-21T07:05:31.000000Z",
+            "created_at": "2021-03-21T07:05:31.000000Z",
 
-        "updated_at": "2021-03-21T07:05:31.000000Z"
+            "updated_at": "2021-03-21T07:05:31.000000Z"
+
+        }
 
     }
-
-}
 
 
 ### 2. Bulk Order Create
@@ -121,7 +122,7 @@ Response:
 use  SteadFast\SteadFastCourierLaravelPackage\Facades\SteadfastCourier;
 
 
-$orderData =
+    $ordersData =
 
     [
 
@@ -259,13 +260,13 @@ $response3 = SteadfastCourier::checkDeliveryStatusByInvoiceId($invoice);
 
  
 Response:
-{
+    {
 
-    "status": 200,
+        "status": 200,
 
-    "delivery_status": "in_review"
+        "delivery_status": "in_review"
 
-}
+    }
 
 ## Delivery Statuses
 
@@ -295,13 +296,13 @@ $response = SteadfastCourier::getCurrentBalance();
 
 Response:
 
- {
+    {
 
-    "status": 200,
+        "status": 200,
 
-    "current_balance": 0
+        "current_balance": 0
 
-}
+    }
 
 
 Support

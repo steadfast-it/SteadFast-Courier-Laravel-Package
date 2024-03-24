@@ -24,7 +24,7 @@ class SteadfastCourier
             'Api-Key' => $this->apiKey,
             'Secret-Key' => $this->secretKey,
             'Content-Type' => 'application/json',
-        ])->post($this->baseUrl.'/create_order', json_encode($data));
+        ])->post($this->baseUrl.'/create_order', $data);
 
         return $response->json();
     }
