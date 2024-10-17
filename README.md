@@ -42,6 +42,7 @@ After publish config file setup your credential. you can see this in your config
  "base_url" => env('STEADFAST_BASE_URL', 'https://portal.steadfast.com.bd/api/v1'),
  "api_key" => env('STEADFAST_API_KEY', 'your-api-key'),
  "secret_key" => env('STEADFAST_SECRET_KEY', 'your-secret-key'),
+ "webhook_bearer_token" => env('STEADFAST_BEARER_TOKEN', 'your-generated-token'),
 ```
 
 ### Set .env configuration
@@ -148,15 +149,15 @@ $response = SteadfastCourier::bulkCreateOrders($ordersData);
 ```json
 [
     {
-    "invoice": "230822-1",
-    "recipient_name": "John Doe",
-    "recipient_address": "House 44, Road 2/A, Dhanmondi, Dhaka 1209",
-    "recipient_phone": "0171111111",
-    "cod_amount": "0.00",
-    "note": null,
-    "consignment_id": null,
-    "tracking_code": null,
-    "status": "error"
+        "invoice": "230822-1",
+        "recipient_name": "John Doe",
+        "recipient_address": "House 44, Road 2/A, Dhanmondi, Dhaka 1209",
+        "recipient_phone": "0171111111",
+        "cod_amount": "0.00",
+        "note": null,
+        "consignment_id": null,
+        "tracking_code": null,
+        "status": "error"
     },
 ]
 ```
@@ -232,6 +233,74 @@ $response = SteadfastCourier::getCurrentBalance();
 {
     "status": 200,
     "current_balance": 0
+}
+```
+
+### 5. Webhook Integration
+
+SteadFast Webhook wants ```Callback Url``` and ```Auth Token(Bearer)```
+
+**Callback Url:** **SteadFast** will use this URL to announce any changes to the parcel status.
+**Auth Token(Bearer):** For Authentication.
+
+#### Make a Api Route
+```php
+Route::post('/staedfast-webhook', [SteadFastWebhookController::class, 'handleSteadFastWebhook']);
+```
+#### Set Auth Token(Bearer) in .env
+```env
+STEADFAST_BEARER_TOKEN ="your-generated-bearer-token"
+```
+#### Controller: ```SteadFastWebhookController``` or your Own made Controller
+```php
+public function handleSteadFastWebhook(Request $request)
+{
+    $payload = $request->all();
+    $token = $request->header('Authorization');
+
+    // Check if Bearer token is valid
+    if ($token !== 'Bearer '. config('steadfast-courier.webhook_bearer_token')) {
+        return response()->json(['error' => 'Unauthorized'], 401);
+    }
+
+    try {
+        $this->validatePayload($payload);
+        $this->processPayload($payload);
+
+        return response()->json(['status' => 'success'], 200);
+    } catch (\Throwable $th) {
+        return response()->json(['error' => $th->getMessage()], 400);
+    }
+    
+
+    return response()->json(['message' => 'Webhook received'], 200);
+}
+
+private function validatePayload($payload)
+{
+    $properties = [
+        'consignment_id',
+        'invoice',
+        'status',
+        'cod_amount',
+        'updated_at',
+    ];
+    $missingProperties = array_diff($properties, array_keys($payload));
+    if ($missingProperties) {
+        abort(400, 'Missing required properties: ' . implode(', ', $missingProperties));
+    }
+}
+
+private function processPayload($payload)
+{
+    $consignment_id = $payload['consignment_id'];
+    $orderStatus = $payload['status'];
+
+    /** 
+    *| WRITE YOUR CODE 
+    *| FOR HANDLE THE COURIER STATUS 
+    *| OF YOUR APPLICATION
+    */
 }
 ```
 
