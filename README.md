@@ -310,8 +310,6 @@ For any issues or questions related to this package, please open an issue on Git
 ## Credits
 
 - [AmadulHaque](https://github.com/AmadulHaque)
-- [Badrul Sajib](https://github.com/badrul-sajib)
-
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
