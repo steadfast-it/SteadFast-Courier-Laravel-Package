@@ -12,7 +12,7 @@ return [
     |
     */
 
-    'base_url' => env('STEADFAST_BASE_URL', 'https://portal.steadfast.com.bd/api/v1'),
+    'base_url' => env('STEADFAST_BASE_URL', 'https://portal.packzy.com/api/v1'),
 
     'api_key' => env('STEADFAST_API_KEY', 'your-api-key'),
 
