@@ -7,8 +7,7 @@
 
 <p align="center" >
 <img src="https://img.shields.io/packagist/v/steadfast-it/SteadFast-Courier-Laravel-Package.svg?style=flat-square">
-<!-- <img src="https://img.shields.io/packagist/dt/steadfast-it/SteadFast-Courier-Laravel-Package.svg?style=flat-square"> -->
-[![packagist Downloads](https://img.shields.io/packagist/dt/steadfast-courier/steadfast-courier-laravel-package.svg?style=flat-square)](https://packagist.org/packages/steadfast-courier/steadfast-courier-laravel-package)
+<img src="https://img.shields.io/packagist/dt/steadfast-it/SteadFast-Courier-Laravel-Package.svg?style=flat-square">
 
 </p>
 
