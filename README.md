@@ -7,8 +7,9 @@
 
 <p align="center" >
 <img src="https://img.shields.io/packagist/v/steadfast-it/SteadFast-Courier-Laravel-Package.svg?style=flat-square">
-<img src="https://img.shields.io/packagist/dt/steadfast-it/SteadFast-Courier-Laravel-Package.svg?style=flat-square">
-[![Downloads](https://img.shields.io/packagist/dt/steadfast-it/SteadFast-Courier-Laravel-Package.svg?style=flat-square)](https://packagist.org/packages/steadfast-courier/steadfast-courier-laravel-package)
+<!-- <img src="https://img.shields.io/packagist/dt/steadfast-it/SteadFast-Courier-Laravel-Package.svg?style=flat-square"> -->
+[![packagist Downloads](https://img.shields.io/packagist/dt/steadfast-courier/steadfast-courier-laravel-package.svg?style=flat-square)](https://packagist.org/packages/steadfast-courier/steadfast-courier-laravel-package)
+
 </p>
 
 This is a Laravel/PHP package for [Steadfast](https://www.steadfast.com.bd/)  Courier System. This package can be used in laravel projects. You can use this package for headless/rest implementation as well as blade or regular mode development. We created this package while working for a project and thought to made it release for all so that it helps. This package is available as regular php [composer package](https://packagist.org/packages/steadfast-it/SteadFast-Courier-Laravel-Package).
