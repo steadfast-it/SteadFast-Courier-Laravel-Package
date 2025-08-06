@@ -14,7 +14,7 @@ This is a Laravel/PHP package for [Steadfast](https://www.steadfast.com.bd/)  Co
 
 
 
-## Features
+## ✨ Features
 
 1. [Placing an order](https://github.com/steadfast-it/SteadFast-Courier-Laravel-Package#2-placing-an-order)
 2. [Bulk Order Create](https://github.com/steadfast-it/SteadFast-Courier-Laravel-Package#3-bulk-order-create)
@@ -22,7 +22,7 @@ This is a Laravel/PHP package for [Steadfast](https://www.steadfast.com.bd/)  Co
 4. [Checking Current Balance](https://github.com/steadfast-it/SteadFast-Courier-Laravel-Package#5-checking-current-balance)
 
  
-## Installation
+## 🚀 Installation
 
 You can install the package via composer:
 
@@ -45,7 +45,7 @@ After publish config file setup your credential. you can see this in your config
  "webhook_bearer_token" => env('STEADFAST_BEARER_TOKEN', 'your-generated-token'),
 ```
 
-### Set .env configuration
+### ⚙️ Set .env configuration
 
 ```env
 STEADFAST_BASE_URL= "https://portal.steadfast.com.bd/api/v1"
@@ -55,7 +55,7 @@ STEADFAST_SECRET_KEY ="your-secret-key"
 
 
 
-### 1. Placing an order
+### 📬 1. Placing an order
 
 ```use SteadFast\SteadFastCourierLaravelPackage\Facades\SteadfastCourier;``` Use this namespace at the top of the php class file
 ```php
@@ -92,7 +92,7 @@ $response = SteadfastCourier::placeOrder($orderData);
 }
 ```
 
-### 2. Bulk Order Create
+### 📦 2. Bulk Order Create
 ```use  SteadFast\SteadFastCourierLaravelPackage\Facades\SteadfastCourier;``` Use this is at the top of the php class file
 ```php
 $ordersData =
@@ -161,7 +161,7 @@ $response = SteadfastCourier::bulkCreateOrders($ordersData);
     },
 ]
 ```
-### 3. Checking Delivery Status
+### 🔍 3. Checking Delivery Status
 There are three way to check Delivery Status, and each have same response like below.
 
 ```use  SteadFast\SteadFastCourierLaravelPackage\Facades\SteadfastCourier;``` Use this at the top of the php class file
@@ -191,17 +191,20 @@ Response:
 
 Here are the possible delivery statuses returned by the Steadfast Courier API along with their descriptions:
 
-- **pending**: Consignment is not delivered or cancelled yet.
-- **delivered_approval_pending**: Consignment is delivered but waiting for admin approval.
-- **partial_delivered_approval_pending**: Consignment is delivered partially and waiting for admin approval.
-- **cancelled_approval_pending**: Consignment is cancelled and waiting for admin approval.
-- **unknown_approval_pending**: Unknown Pending status. Need contact with the support team.
-- **delivered**: Consignment is delivered and balance added.
-- **partial_delivered**: Consignment is partially delivered and balance added.
-- **cancelled**: Consignment is cancelled and balance updated.
-- **hold**: Consignment is held.
-- **in_review**: Order is placed and waiting to be reviewed.
-- **unknown**: Unknown status. Need contact with the support team.
+| Status                                | Meaning                                   |
+| ------------------------------------- | ----------------------------------------- |
+| pending                               | Not yet delivered or canceled             |
+| delivered\_approval\_pending          | Delivered, awaiting admin approval        |
+| partial\_delivered\_approval\_pending | Partially delivered, awaiting approval    |
+| cancelled\_approval\_pending          | Cancelled, awaiting approval              |
+| unknown\_approval\_pending            | Unknown state, needs support intervention |
+| delivered                             | Delivered and balance updated             |
+| partial\_delivered                    | Partially delivered and balance updated   |
+| cancelled                             | Cancelled and balance updated             |
+| hold                                  | On hold                                   |
+| in\_review                            | Order placed, under review                |
+| unknown                               | Unknown status, Need contact with the support team                           |
+
 
 ```php
 [
@@ -222,7 +225,7 @@ Here are the possible delivery statuses returned by the Steadfast Courier API al
 You can use these statuses to track the progress of your consignments and take appropriate actions.
 
 
-### 4. Checking Current Balance
+### 💰 4. Checking Current Balance
 
 ```use  SteadFast\SteadFastCourierLaravelPackage\Facades\SteadfastCourier;```  Use this at the top of the php class file
 ```php
@@ -236,7 +239,7 @@ $response = SteadfastCourier::getCurrentBalance();
 }
 ```
 
-### 5. Webhook Integration
+### 🔁 5. Webhook Integration
 
 SteadFast Webhook wants ```Callback Url``` and ```Auth Token(Bearer)```
 
@@ -304,12 +307,12 @@ private function processPayload($payload)
 }
 ```
 
-Support
+## 📞 Support
 For any issues or questions related to this package, please open an issue on GitHub.
 
-## Credits
+## 👥 Credits
 
 - [AmadulHaque](https://github.com/AmadulHaque)
-## License
+## 📄 License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
