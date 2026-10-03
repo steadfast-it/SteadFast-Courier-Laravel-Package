@@ -5,7 +5,7 @@ namespace SteadFast\SteadFastCourierLaravelPackage\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \AmadulHaque\SteadFastCourierLaravelPackage\SteadfastCourier
+ * @see \SteadFast\SteadFastCourierLaravelPackage\SteadfastCourier
  */
 class SteadfastCourier extends Facade
 {

@@ -18,6 +18,8 @@ return [
 
     'secret_key' => env('STEADFAST_SECRET_KEY', 'your-secret-key'),
 
+    'webhook_secret' => env('STEADFAST_TOKEN'),
+
     /*
     |--------------------------------------------------------------------------
     | Default Content Type

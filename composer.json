@@ -1,6 +1,6 @@
 {
     "name": "steadfast-courier/steadfast-courier-laravel-package",
-    "description": "A complate Laravel package for SteadFast Courier Limited",
+    "description": "A Laravel package for the Steadfast Courier API",
     "keywords": [
         "SteadFast",
         "laravel",
@@ -71,7 +71,7 @@
                 "SteadFast\\SteadFastCourierLaravelPackage\\LaravelSteadfastCourierServiceProvider"
             ],
             "aliases": {
-                "SteadFastCourier": "SteadFast\\SteadFastCourierLaravelPackage\\Facades\\SteadFastCourierLaravelPackage"
+                "SteadFastCourier": "SteadFast\\SteadFastCourierLaravelPackage\\Facades\\SteadfastCourier"
             }
         }
     },
