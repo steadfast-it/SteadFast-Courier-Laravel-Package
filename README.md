@@ -307,6 +307,12 @@ private function processPayload($payload)
 }
 ```
 
+#### Webhook statuses vs. status-check statuses
+
+The `status` in a webhook payload is not the same list as the one returned by the status-check methods above. SteadFast's webhook guide (in the panel, under Webhook) lists five values: `pending`, `delivered`, `partial_delivered`, `cancelled` and `unknown`. The longer [Delivery Statuses](#delivery-statuses) list (`*_approval_pending`, `hold`, `in_review`) is what the status-check methods return.
+
+Don't reject a webhook because its `status` is not in your list. Store what you receive and handle unknown values as "ask SteadFast". A 4xx answer may stop SteadFast from retrying, so the event would be lost.
+
 ### 6. Using Custom Config
 
 If you don’t want to rely on .env or you’re building a SaaS application with multiple Steadfast Courier integrations, you can provide custom configuration using the withConfig method:
