@@ -117,23 +117,23 @@ If you prefer the registered alias, `\SteadFastCourier::placeOrder(...)` works i
 
 ## Endpoint coverage
 
-| Steadfast endpoint | Method |
-| --- | --- |
-| `POST /create_order` | [`placeOrder()`](#place-an-order) |
-| `POST /create_order/bulk-order` | [`bulkCreateOrders()`](#create-orders-in-bulk) |
-| `GET /status_by_cid/{id}` | [`checkDeliveryStatusByConsignmentId()`](#check-a-delivery-status) |
-| `GET /status_by_invoice/{invoice}` <sup>1</sup> | [`checkDeliveryStatusByInvoiceId()`](#check-a-delivery-status) |
-| `GET /status_by_trackingcode/{code}` <sup>1</sup> | [`checkDeliveryStatusByTrackingCode()`](#check-a-delivery-status) |
-| `GET /trackings_by_invoice/{invoice}` | [`getTrackingsByInvoice()`](#read-the-full-tracking-history) |
-| `POST /create_return_request` | [`createReturnRequest()`](#returns-and-pickups) |
-| `GET /get_return_requests` | [`getReturnRequests()`](#returns-and-pickups) |
-| `GET /get_return_request/{id}` | [`getReturnRequest()`](#returns-and-pickups) |
-| `POST /create_pickup_request` | [`createPickupRequest()`](#request-a-pickup) |
-| `GET /get_balance` | [`getCurrentBalance()`](#account-and-reference-data) |
-| `GET /payments` | [`getPayments()`](#payments) |
-| `GET /payments/{payment_id}` | [`getPayment()`](#payments) |
-| `GET /police_stations` | [`getPoliceStations()`](#police-stations) |
-| `GET /fraud_check/{phone}` | [`fraudCheck()`](#fraud-check) |
+| Method | Endpoint | Package method | Description |
+| --- | --- | --- | --- |
+| `POST` | `/create_order` | [`placeOrder()`](#place-an-order) | Book a single parcel. |
+| `POST` | `/create_order/bulk-order` | [`bulkCreateOrders()`](#create-orders-in-bulk) | Book up to 500 parcels in one call. |
+| `GET` | `/status_by_cid/{id}` | [`checkDeliveryStatusByConsignmentId()`](#check-a-delivery-status) | Current delivery status, by consignment ID. |
+| `GET` | `/status_by_invoice/{invoice}` <sup>1</sup> | [`checkDeliveryStatusByInvoiceId()`](#check-a-delivery-status) | Current delivery status, by your own invoice number. |
+| `GET` | `/status_by_trackingcode/{code}` <sup>1</sup> | [`checkDeliveryStatusByTrackingCode()`](#check-a-delivery-status) | Current delivery status, by tracking code. |
+| `GET` | `/trackings_by_invoice/{invoice}` | [`getTrackingsByInvoice()`](#read-the-full-tracking-history) | Full event history for a consignment, not just its current status. |
+| `POST` | `/create_return_request` | [`createReturnRequest()`](#create-a-return-request) | Ask for a parcel to be returned to you. |
+| `GET` | `/get_return_requests` | [`getReturnRequests()`](#list-and-read-return-requests) | List all of your return requests. |
+| `GET` | `/get_return_request/{id}` | [`getReturnRequest()`](#list-and-read-return-requests) | Read one return request. |
+| `POST` | `/create_pickup_request` | [`createPickupRequest()`](#request-a-pickup) | Ask Steadfast to collect parcels from your address. |
+| `GET` | `/get_balance` | [`getCurrentBalance()`](#current-balance) | Your current merchant account balance. |
+| `GET` | `/payments` | [`getPayments()`](#payments) | List the payments Steadfast has made to you. |
+| `GET` | `/payments/{payment_id}` | [`getPayment()`](#payments) | Read one payment. |
+| `GET` | `/police_stations` | [`getPoliceStations()`](#police-stations) | Districts and their police stations, for pickup requests. |
+| `GET` | `/fraud_check/{phone}` | [`fraudCheck()`](#fraud-check) | A recipient's delivery and cancellation history. |
 
 <sup>1</sup> Not listed in the current Postman collection, but still served by the API and
 supported here since 1.x.
