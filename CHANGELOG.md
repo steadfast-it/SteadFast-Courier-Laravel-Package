@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to `steadfast-courier/steadfast-courier-laravel-package` are documented
+All notable changes to `steadfast-courier/steadfast-laravel-package` are documented
 in this file.
 
 This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and the
@@ -14,6 +14,13 @@ rewrite.
 
 ### Breaking changes
 
+- **The package has been renamed** from `steadfast-courier/steadfast-courier-laravel-package`
+  to `steadfast-courier/steadfast-laravel-package`, matching the renamed repository. The old
+  package is abandoned in favour of the new one and receives no further releases.
+- **The config file and config keys have been renamed** from `steadfast-courier` to
+  `steadfast`. Re-publish with `--tag="steadfast-config"` and read `config('steadfast.*')`
+  instead of `config('steadfast-courier.*')`. The `STEADFAST_*` environment variable names are
+  unchanged.
 - **PHP 8.2 or newer, Laravel 12 or newer.** Laravel 11 and earlier are no longer supported:
   Laravel 11 reached end of security support on 12 March 2026, and Composer's `block-insecure`
   audit default refuses to install any 11.x release. Stay on `^1.1` if you cannot upgrade.

@@ -1,10 +1,12 @@
 {
-    "name": "steadfast-courier/steadfast-courier-laravel-package",
+    "name": "steadfast-courier/steadfast-laravel-package",
     "description": "A complete Laravel package for SteadFast Courier Limited",
     "keywords": [
         "SteadFast",
         "laravel",
-        "steadfast-courier-laravel-package"
+        "courier",
+        "bangladesh",
+        "steadfast-laravel-package"
     ],
     "homepage": "https://github.com/steadfast-it/SteadFast-Laravel-Package",
     "license": "MIT",
@@ -20,6 +22,9 @@
         "guzzlehttp/guzzle": "^7.8|^8.0",
         "illuminate/contracts": "^12.0|^13.0",
         "spatie/laravel-package-tools": "^1.93"
+    },
+    "replace": {
+        "steadfast-courier/steadfast-courier-laravel-package": "self.version"
     },
     "require-dev": {
         "larastan/larastan": "^3.14",

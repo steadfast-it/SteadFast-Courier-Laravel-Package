@@ -444,7 +444,7 @@ it('keeps separate withConfig clients isolated from each other', function () {
 // =====================================================================
 
 it('ships every documented config key', function () {
-    expect(config('steadfast-courier'))->toHaveKeys([
+    expect(config('steadfast'))->toHaveKeys([
         'base_url', 'api_key', 'secret_key', 'webhook_bearer_token',
         'content_type', 'timeout', 'connect_timeout', 'retry',
     ]);

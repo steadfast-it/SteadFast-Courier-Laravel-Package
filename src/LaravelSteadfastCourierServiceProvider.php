@@ -11,7 +11,7 @@ class LaravelSteadfastCourierServiceProvider extends PackageServiceProvider
     {
 
         $package
-            ->name('steadfast-courier')
+            ->name('steadfast')
             ->hasConfigFile();
     }
 }

@@ -9,10 +9,10 @@
 </p>
 
 <p align="center">
-  <a href="https://packagist.org/packages/steadfast-courier/steadfast-courier-laravel-package"><img src="https://img.shields.io/packagist/v/steadfast-courier/steadfast-courier-laravel-package.svg?style=flat-square" alt="Latest version"></a>
-  <a href="https://packagist.org/packages/steadfast-courier/steadfast-courier-laravel-package"><img src="https://img.shields.io/packagist/dt/steadfast-courier/steadfast-courier-laravel-package.svg?style=flat-square" alt="Downloads"></a>
+  <a href="https://packagist.org/packages/steadfast-courier/steadfast-laravel-package"><img src="https://img.shields.io/packagist/v/steadfast-courier/steadfast-laravel-package.svg?style=flat-square" alt="Latest version"></a>
+  <a href="https://packagist.org/packages/steadfast-courier/steadfast-laravel-package"><img src="https://img.shields.io/packagist/dt/steadfast-courier/steadfast-laravel-package.svg?style=flat-square" alt="Downloads"></a>
   <a href="https://github.com/steadfast-it/SteadFast-Laravel-Package/actions/workflows/run-tests.yml"><img src="https://img.shields.io/github/actions/workflow/status/steadfast-it/SteadFast-Laravel-Package/run-tests.yml?branch=main&label=tests&style=flat-square" alt="Tests"></a>
-  <a href="LICENSE.md"><img src="https://img.shields.io/packagist/l/steadfast-courier/steadfast-courier-laravel-package.svg?style=flat-square" alt="License"></a>
+  <a href="LICENSE.md"><img src="https://img.shields.io/packagist/l/steadfast-courier/steadfast-laravel-package.svg?style=flat-square" alt="License"></a>
 </p>
 
 Book parcels, track deliveries, handle returns and pickups, and reconcile payments from your
@@ -54,13 +54,13 @@ release. Projects still on Laravel 11 or older should stay on `^1.1` of this pac
 ## Installation
 
 ```bash
-composer require steadfast-courier/steadfast-courier-laravel-package
+composer require steadfast-courier/steadfast-laravel-package
 ```
 
 Publish the config file:
 
 ```bash
-php artisan vendor:publish --tag="steadfast-courier-config"
+php artisan vendor:publish --tag="steadfast-config"
 ```
 
 ## Configuration
@@ -89,7 +89,7 @@ STEADFAST_RETRY_TIMES=2
 STEADFAST_RETRY_SLEEP=200
 ```
 
-The published `config/steadfast-courier.php` documents each option inline.
+The published `config/steadfast.php` documents each option inline.
 
 ## Quick start
 
@@ -574,7 +574,7 @@ class SteadFastWebhookController extends Controller
 {
     public function handle(Request $request)
     {
-        $expected = config('steadfast-courier.webhook_bearer_token');
+        $expected = config('steadfast.webhook_bearer_token');
 
         // Never authenticate against an unset token. If $expected were empty, the
         // comparison below would collapse to 'Bearer ', which any caller can send.
@@ -628,6 +628,31 @@ data or leak credentials. Expect a short checklist rather than a rewrite.
 
 **Requirements.** PHP 8.2+ and Laravel 12+. See [Requirements](#requirements).
 
+**The package has been renamed** from `steadfast-courier/steadfast-courier-laravel-package`
+to `steadfast-courier/steadfast-laravel-package`, following the repository rename. The old
+package is abandoned and will receive no further releases. Swap it in one command:
+
+```bash
+composer remove steadfast-courier/steadfast-courier-laravel-package
+composer require steadfast-courier/steadfast-laravel-package
+```
+
+**The config file and its keys have been renamed** from `steadfast-courier` to `steadfast`.
+Re-publish the config and rename any keys you read directly:
+
+```bash
+php artisan vendor:publish --tag="steadfast-config"
+```
+
+```diff
+- config('steadfast-courier.api_key')
++ config('steadfast.api_key')
+```
+
+Your published `config/steadfast-courier.php` is no longer read: move any customisations into
+`config/steadfast.php` and delete the old file. The `STEADFAST_*` environment variable names
+are unchanged, so `.env` needs no edits.
+
 **`bulkCreateOrders()` posts a different body.** It now sends the order list as the request
 body, matching the current API documentation; it previously sent
 `{"data": "<json string>"}`. The response is wrapped, so read `$response['data']` instead of
@@ -659,7 +684,7 @@ request sending a bare `Bearer ` header whenever the token was unset. Re-publish
 or add the key by hand:
 
 ```bash
-php artisan vendor:publish --tag="steadfast-courier-config" --force
+php artisan vendor:publish --tag="steadfast-config" --force
 ```
 
 ## Contributing

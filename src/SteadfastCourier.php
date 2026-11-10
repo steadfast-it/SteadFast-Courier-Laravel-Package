@@ -33,14 +33,14 @@ class SteadfastCourier
 
     public function __construct()
     {
-        $this->baseUrl = config('steadfast-courier.base_url');
-        $this->apiKey = config('steadfast-courier.api_key');
-        $this->secretKey = config('steadfast-courier.secret_key');
-        $this->contentType = config('steadfast-courier.content_type', 'application/json');
-        $this->timeout = config('steadfast-courier.timeout', 30);
-        $this->connectTimeout = config('steadfast-courier.connect_timeout', 10);
-        $this->retryTimes = config('steadfast-courier.retry.times', 2);
-        $this->retrySleep = config('steadfast-courier.retry.sleep', 200);
+        $this->baseUrl = config('steadfast.base_url');
+        $this->apiKey = config('steadfast.api_key');
+        $this->secretKey = config('steadfast.secret_key');
+        $this->contentType = config('steadfast.content_type', 'application/json');
+        $this->timeout = config('steadfast.timeout', 30);
+        $this->connectTimeout = config('steadfast.connect_timeout', 10);
+        $this->retryTimes = config('steadfast.retry.times', 2);
+        $this->retrySleep = config('steadfast.retry.sleep', 200);
     }
 
     /**
