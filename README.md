@@ -89,7 +89,9 @@ STEADFAST_RETRY_TIMES=2
 STEADFAST_RETRY_SLEEP=200
 ```
 
-The published `config/steadfast.php` documents each option inline.
+The published `config/steadfast.php` documents each option inline. A trailing slash on
+`STEADFAST_BASE_URL` is fine, and leaving it unset raises a clear `InvalidRequestException`
+rather than a confusing HTTP client error.
 
 ## Quick start
 
@@ -307,8 +309,17 @@ if ($status?->needsSupport()) {
 echo $status?->label(); // "Partially delivered and balance updated"
 ```
 
-`fromResponse()` returns `null` when the payload carries no status this package recognises, so
-a status Steadfast adds in future degrades gracefully instead of throwing in production.
+`fromResponse()` reads any of the three shapes Steadfast uses: `delivery_status` from a status
+check, `consignment.status` from [`placeOrder()`](#place-an-order), and `status` from a
+[webhook](#webhooks) payload. It returns `null` when the payload carries no status this package
+recognises, so a status Steadfast adds in future degrades gracefully rather than throwing in
+production.
+
+```php
+DeliveryStatus::fromResponse(SteadfastCourier::placeOrder($order));              // InReview
+DeliveryStatus::fromResponse(SteadfastCourier::checkDeliveryStatusByInvoiceId($i)); // Delivered
+DeliveryStatus::fromResponse($webhookPayload);                                   // Cancelled
+```
 
 | API value | Enum case | Meaning | Bucket |
 | --- | --- | --- | --- |

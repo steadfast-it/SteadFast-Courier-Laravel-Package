@@ -27,6 +27,15 @@ function sentApiKeys(): array
         ->all();
 }
 
+function timeoutsOf(SteadfastCourierClient $client): array
+{
+    $read = function (string $property) use ($client) {
+        return (fn () => $this->{$property})->call($client);
+    };
+
+    return ['timeout' => $read('timeout'), 'connect_timeout' => $read('connectTimeout')];
+}
+
 function anOrder(array $overrides = []): array
 {
     return array_merge([
@@ -478,4 +487,110 @@ it('documents every public method on the facade', function () {
     preg_match_all('/@method static \S+ (\w+)\(/', $facade, $f);
 
     expect(array_values(array_diff($methods, $f[1])))->toBe([]);
+});
+
+// =====================================================================
+// Configuration robustness
+// =====================================================================
+
+// A trailing slash in STEADFAST_BASE_URL is an easy thing to leave in, and
+// concatenating it produced "/api/v1//get_balance".
+it('tolerates a trailing slash on the base url', function (string $configured) {
+    config()->set('steadfast.base_url', $configured);
+    fakeOk();
+
+    SteadfastCourier::getCurrentBalance();
+
+    Http::assertSent(fn (Request $request) => $request->url() === BASE.'/get_balance');
+})->with([
+    'no slash' => ['https://portal.packzy.com/api/v1'],
+    'one slash' => ['https://portal.packzy.com/api/v1/'],
+    'several slashes' => ['https://portal.packzy.com/api/v1///'],
+    'surrounding spaces' => ['  https://portal.packzy.com/api/v1/  '],
+]);
+
+it('explains an unset base url instead of failing obscurely', function ($configured) {
+    config()->set('steadfast.base_url', $configured);
+    Http::fake();
+
+    expect(fn () => SteadfastCourier::getCurrentBalance())
+        ->toThrow(InvalidRequestException::class, 'STEADFAST_BASE_URL');
+
+    Http::assertNothingSent();
+})->with([
+    'null' => [null],
+    'empty string' => [''],
+    'only whitespace' => ['   '],
+]);
+
+// An empty STEADFAST_TIMEOUT= in .env reaches config as '', which casts to 0,
+// and Guzzle reads a timeout of 0 as "wait forever".
+it('falls back to default timeouts when the config is empty or nonsense', function ($value) {
+    config()->set('steadfast.timeout', $value);
+    config()->set('steadfast.connect_timeout', $value);
+
+    $client = new SteadfastCourierClient;
+
+    expect(timeoutsOf($client))->toBe(['timeout' => 30, 'connect_timeout' => 10]);
+})->with([
+    'empty string' => [''],
+    'null' => [null],
+    'not a number' => ['abc'],
+    'zero' => [0],
+    'negative' => [-5],
+]);
+
+it('honours explicitly configured timeouts, including numeric strings', function () {
+    config()->set('steadfast.timeout', '45');
+    config()->set('steadfast.connect_timeout', 7);
+
+    expect(timeoutsOf(new SteadfastCourierClient))
+        ->toBe(['timeout' => 45, 'connect_timeout' => 7]);
+});
+
+// 0 and 1 both mean "do not retry", so neither may be replaced by the default.
+it('treats a configured retry count of zero as no retries', function ($times, int $expectedAttempts) {
+    config()->set('steadfast.retry.times', $times);
+
+    $attempts = 0;
+    Http::fake(function () use (&$attempts) {
+        $attempts++;
+
+        throw new ConnectionException('Connection timed out');
+    });
+
+    expect(fn () => (new SteadfastCourierClient)->getCurrentBalance())
+        ->toThrow(ConnectionException::class);
+
+    expect($attempts)->toBe($expectedAttempts);
+})->with([
+    'zero disables retries' => [0, 1],
+    'one disables retries' => [1, 1],
+    'three retries' => [3, 3],
+    'empty falls back to default' => ['', 2],
+]);
+
+// A bool casts to "" or "1" and an array casts to "Array"; both would quietly
+// build a URL pointing at something other than the intended record.
+it('refuses an identifier that is not a usable string', function ($value) {
+    Http::fake();
+
+    expect(fn () => SteadfastCourier::getPayment($value))
+        ->toThrow(InvalidRequestException::class);
+
+    Http::assertNothingSent();
+})->with([
+    'false' => [false],
+    'true' => [true],
+    'array' => [[1, 2]],
+    'null' => [null],
+    'object' => [new stdClass],
+]);
+
+it('accepts a numeric zero identifier', function () {
+    fakeOk();
+
+    SteadfastCourier::getReturnRequest(0);
+
+    Http::assertSent(fn (Request $request) => $request->url() === BASE.'/get_return_request/0');
 });

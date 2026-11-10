@@ -37,10 +37,15 @@ class SteadfastCourier
         $this->apiKey = config('steadfast.api_key');
         $this->secretKey = config('steadfast.secret_key');
         $this->contentType = config('steadfast.content_type', 'application/json');
-        $this->timeout = config('steadfast.timeout', 30);
-        $this->connectTimeout = config('steadfast.connect_timeout', 10);
-        $this->retryTimes = config('steadfast.retry.times', 2);
-        $this->retrySleep = config('steadfast.retry.sleep', 200);
+
+        // env() yields strings, and an empty STEADFAST_TIMEOUT= would otherwise
+        // become a timeout of 0, which Guzzle reads as "wait forever".
+        $this->timeout = $this->positiveInt(config('steadfast.timeout'), 30);
+        $this->connectTimeout = $this->positiveInt(config('steadfast.connect_timeout'), 10);
+
+        // 0 and 1 both legitimately mean "do not retry", so these may be zero.
+        $this->retryTimes = $this->wholeNumber(config('steadfast.retry.times'), 2);
+        $this->retrySleep = $this->wholeNumber(config('steadfast.retry.sleep'), 200);
     }
 
     /**
@@ -285,11 +290,19 @@ class SteadfastCourier
      */
     protected function requiredSegment($value, string $name): string
     {
-        if ($value === null || $value === '' || (is_string($value) && trim($value) === '')) {
+        // A bool casts to "" or "1", and an array casts to "Array" with a
+        // warning. Both would quietly build a URL pointing somewhere else.
+        if (! is_scalar($value) || is_bool($value)) {
             throw InvalidRequestException::emptyIdentifier($name);
         }
 
-        return rawurlencode((string) $value);
+        $segment = trim((string) $value);
+
+        if ($segment === '') {
+            throw InvalidRequestException::emptyIdentifier($name);
+        }
+
+        return rawurlencode($segment);
     }
 
     protected function get(string $uri)
@@ -304,9 +317,45 @@ class SteadfastCourier
 
     protected function send(string $method, string $uri, array $options = [])
     {
-        $url = $this->baseUrl.$uri;
+        $url = $this->baseUrl().$uri;
 
         return $this->decode($method, $url, $this->client($method)->send($method, $url, $options));
+    }
+
+    /**
+     * The configured base URL, without a trailing slash.
+     *
+     * A trailing slash is an easy thing to leave in STEADFAST_BASE_URL, and
+     * concatenating it would produce "/api/v1//get_balance". An unset base URL
+     * would otherwise surface as a confusing "URI must include a scheme" error
+     * from the HTTP client.
+     */
+    protected function baseUrl(): string
+    {
+        $baseUrl = is_string($this->baseUrl) ? trim($this->baseUrl) : '';
+
+        if ($baseUrl === '') {
+            throw InvalidRequestException::missingBaseUrl();
+        }
+
+        return rtrim($baseUrl, '/');
+    }
+
+    /**
+     * Read a config value that must be a positive whole number, falling back to
+     * the default when it is missing, empty or nonsense.
+     */
+    protected function positiveInt($value, int $default): int
+    {
+        return is_numeric($value) && (int) $value > 0 ? (int) $value : $default;
+    }
+
+    /**
+     * As positiveInt(), but zero is a meaningful value rather than "unset".
+     */
+    protected function wholeNumber($value, int $default): int
+    {
+        return is_numeric($value) ? max(0, (int) $value) : $default;
     }
 
     protected function client(string $method): PendingRequest

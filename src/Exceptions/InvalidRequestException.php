@@ -10,6 +10,15 @@ namespace SteadFast\SteadFastCourierLaravelPackage\Exceptions;
  */
 class InvalidRequestException extends SteadfastCourierException
 {
+    public static function missingBaseUrl(): self
+    {
+        return new self(
+            'No Steadfast base URL is configured. Set STEADFAST_BASE_URL in your .env file, '
+            .'or publish the package config with: '
+            .'php artisan vendor:publish --tag="steadfast-config"'
+        );
+    }
+
     public static function emptyIdentifier(string $name): self
     {
         return new self(sprintf(

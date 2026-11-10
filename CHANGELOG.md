@@ -61,6 +61,19 @@ rewrite.
 
 ### Fixed
 
+- A trailing slash on `STEADFAST_BASE_URL` produced a doubled slash in every request URL, such
+  as `/api/v1//get_balance`. The base URL is now normalised, and an unset one raises a clear
+  `InvalidRequestException` instead of a confusing "URI must include a scheme" error.
+- An empty `STEADFAST_TIMEOUT=` in `.env` reached the HTTP client as a timeout of `0`, which
+  Guzzle treats as "wait forever", silently removing the protection the timeout was added for.
+  Timeout and retry settings now fall back to their defaults when empty or non-numeric, while
+  still honouring a retry count of `0` or `1` as "do not retry".
+- An identifier passed as `false`, `true`, an array or an object was cast into a URL segment,
+  producing a request against a different record or an empty path segment. Only usable scalars
+  are accepted now.
+- `DeliveryStatus::fromResponse()` only looked at `delivery_status`, so it returned `null` for a
+  `placeOrder()` response even though the consignment carries the same status vocabulary. It now
+  reads `delivery_status`, `consignment.status` and a webhook's `status`, in that order.
 - **Credentials leaked between tenants.** `withConfig()` mutated the instance cached by the
   facade, so the credentials passed for one tenant were reused by every later call in the same
   process, booking parcels against the wrong merchant account.

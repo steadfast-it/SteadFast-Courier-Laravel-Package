@@ -28,9 +28,21 @@ enum DeliveryStatus: string
      */
     public static function fromResponse(array $response): ?self
     {
-        $status = $response['delivery_status'] ?? $response['status'] ?? null;
+        // A status check reports "delivery_status"; placeOrder() nests the same
+        // vocabulary under "consignment"; a webhook sends it as "status".
+        $candidates = [
+            $response['delivery_status'] ?? null,
+            $response['consignment']['status'] ?? null,
+            $response['status'] ?? null,
+        ];
 
-        return is_string($status) ? self::tryFrom($status) : null;
+        foreach ($candidates as $candidate) {
+            if (is_string($candidate) && ($status = self::tryFrom($candidate)) !== null) {
+                return $status;
+            }
+        }
+
+        return null;
     }
 
     /**

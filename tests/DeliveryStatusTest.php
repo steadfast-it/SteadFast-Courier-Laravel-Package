@@ -73,3 +73,41 @@ it('gives every status a human label', function () {
         expect($status->label())->toBeString()->not->toBeEmpty();
     }
 });
+
+// placeOrder() nests the same status vocabulary under "consignment", so reading
+// the status straight off that response should work without digging.
+it('reads the status out of a placeOrder response', function () {
+    expect(DeliveryStatus::fromResponse([
+        'status' => 200,
+        'message' => 'Consignment has been created successfully.',
+        'consignment' => ['consignment_id' => 131822154, 'status' => 'in_review'],
+    ]))->toBe(DeliveryStatus::InReview);
+});
+
+it('reads the status out of a webhook payload', function () {
+    expect(DeliveryStatus::fromResponse([
+        'consignment_id' => 131822154,
+        'status' => 'delivered',
+        'updated_at' => '2026-03-21T07:05:31.000000Z',
+    ]))->toBe(DeliveryStatus::Delivered);
+});
+
+// A bulk entry's "status" says whether booking succeeded, not how delivery went.
+it('does not mistake a bulk success flag for a delivery status', function (string $flag) {
+    expect(DeliveryStatus::fromResponse(['status' => $flag]))->toBeNull();
+})->with(['success', 'error']);
+
+it('prefers delivery_status over any other candidate', function () {
+    expect(DeliveryStatus::fromResponse([
+        'delivery_status' => 'cancelled',
+        'consignment' => ['status' => 'in_review'],
+        'status' => 'delivered',
+    ]))->toBe(DeliveryStatus::Cancelled);
+});
+
+it('falls through to the next candidate when one is unrecognised', function () {
+    expect(DeliveryStatus::fromResponse([
+        'delivery_status' => 'teleported',
+        'consignment' => ['status' => 'hold'],
+    ]))->toBe(DeliveryStatus::Hold);
+});
