@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/steadfast-it/SteadFast-Courier-Laravel-Package/main/logo.png" width="30%" alt="SteadFast">
+  <img src="https://raw.githubusercontent.com/steadfast-it/SteadFast-Laravel-Package/main/logo.png" width="30%" alt="SteadFast">
 </p>
 
 <h1 align="center">SteadFast Courier for Laravel</h1>
@@ -11,7 +11,7 @@
 <p align="center">
   <a href="https://packagist.org/packages/steadfast-courier/steadfast-courier-laravel-package"><img src="https://img.shields.io/packagist/v/steadfast-courier/steadfast-courier-laravel-package.svg?style=flat-square" alt="Latest version"></a>
   <a href="https://packagist.org/packages/steadfast-courier/steadfast-courier-laravel-package"><img src="https://img.shields.io/packagist/dt/steadfast-courier/steadfast-courier-laravel-package.svg?style=flat-square" alt="Downloads"></a>
-  <a href="https://github.com/steadfast-it/SteadFast-Courier-Laravel-Package/actions/workflows/run-tests.yml"><img src="https://img.shields.io/github/actions/workflow/status/steadfast-it/SteadFast-Courier-Laravel-Package/run-tests.yml?branch=main&label=tests&style=flat-square" alt="Tests"></a>
+  <a href="https://github.com/steadfast-it/SteadFast-Laravel-Package/actions/workflows/run-tests.yml"><img src="https://img.shields.io/github/actions/workflow/status/steadfast-it/SteadFast-Laravel-Package/run-tests.yml?branch=main&label=tests&style=flat-square" alt="Tests"></a>
   <a href="LICENSE.md"><img src="https://img.shields.io/packagist/l/steadfast-courier/steadfast-courier-laravel-package.svg?style=flat-square" alt="License"></a>
 </p>
 
@@ -678,11 +678,11 @@ The test suite never touches the network: it fakes the HTTP client and fails on 
 unexpected request. Please add a test with your change, and make sure it fails without it.
 
 Bug reports and feature requests belong in
-[GitHub issues](https://github.com/steadfast-it/SteadFast-Courier-Laravel-Package/issues).
+[GitHub issues](https://github.com/steadfast-it/SteadFast-Laravel-Package/issues).
 
 ## Credits and license
 
 Built and maintained with thanks to [AmadulHaque](https://github.com/AmadulHaque) and
-[all contributors](https://github.com/steadfast-it/SteadFast-Courier-Laravel-Package/graphs/contributors).
+[all contributors](https://github.com/steadfast-it/SteadFast-Laravel-Package/graphs/contributors).
 
 The MIT License (MIT). See [LICENSE.md](LICENSE.md).
