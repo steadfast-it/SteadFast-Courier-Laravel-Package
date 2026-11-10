@@ -1,0 +1,103 @@
+name: run-tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4', '8.5']
+        laravel: ['12.*', '13.*']
+        include:
+          - laravel: '12.*'
+            testbench: '^10.12'
+          - laravel: '13.*'
+            testbench: '^11.3'
+
+    name: PHP ${{ matrix.php }} / Laravel ${{ matrix.laravel }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: curl, dom, libxml, mbstring, zip
+          coverage: none
+
+      - name: Install dependencies
+        run: |
+          composer require \
+            "laravel/framework:${{ matrix.laravel }}" \
+            "orchestra/testbench:${{ matrix.testbench }}" \
+            --no-interaction --no-update
+          composer update --prefer-dist --no-interaction --no-progress
+
+      - name: Run tests
+        run: vendor/bin/pest --no-coverage
+
+  quality:
+    runs-on: ubuntu-latest
+    name: Pint and PHPStan
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: curl, dom, libxml, mbstring, zip
+          coverage: none
+
+      - name: Install dependencies
+        run: composer update --prefer-dist --no-interaction --no-progress
+
+      - name: Check code style
+        run: vendor/bin/pint --test
+
+      - name: Run static analysis
+        run: vendor/bin/phpstan analyse --no-progress
+
+  php82:
+    runs-on: ubuntu-latest
+    name: PHP 8.2 floor (lint and resolve)
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: curl, dom, libxml, mbstring, zip
+          coverage: none
+
+      # The package supports PHP 8.2, but Pest needs 8.3, so this job cannot run
+      # the suite. It checks the two things it can: that the sources parse on
+      # 8.2, and that the runtime dependencies still resolve there.
+      - name: Lint sources on PHP 8.2
+        run: find src config -name '*.php' -print0 | xargs -0 -n1 -t php -l
+
+      - name: Check runtime dependencies resolve on PHP 8.2
+        run: |
+          php -r '
+            $json = json_decode(file_get_contents("composer.json"), true, 512, JSON_THROW_ON_ERROR);
+            unset($json["require-dev"], $json["scripts"]);
+            file_put_contents("composer.json", json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+          '
+          composer update --dry-run --no-scripts --no-interaction --no-progress

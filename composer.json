@@ -1,12 +1,12 @@
 {
     "name": "steadfast-courier/steadfast-courier-laravel-package",
-    "description": "A complate Laravel package for SteadFast Courier Limited",
+    "description": "A complete Laravel package for SteadFast Courier Limited",
     "keywords": [
         "SteadFast",
         "laravel",
         "steadfast-courier-laravel-package"
     ],
-    "homepage": "https://github.com/steadfast-it/steadfast-courier-laravel-package",
+    "homepage": "https://github.com/steadfast-it/steadfast-laravel-package",
     "license": "MIT",
     "authors": [
         {
@@ -16,18 +16,20 @@
         }
     ],
     "require": {
-        "php": "^7.2|^8.0",
-        "spatie/laravel-package-tools": "^1.16",
-        "illuminate/contracts": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0|^12.0",
-        "guzzlehttp/guzzle": "^7.2"
+        "php": "^8.2",
+        "guzzlehttp/guzzle": "^7.8|^8.0",
+        "illuminate/contracts": "^12.0|^13.0",
+        "spatie/laravel-package-tools": "^1.93"
     },
     "require-dev": {
-        "laravel/pint": "^1.14",
-        "nunomaduro/collision": "^8.1.1||^7.10.0",
-        "orchestra/testbench": "^9.0.0||^8.22.0",
-        "pestphp/pest": "^2.34",
-        "pestphp/pest-plugin-arch": "^2.7",
-        "pestphp/pest-plugin-laravel": "^2.3"
+        "larastan/larastan": "^3.14",
+        "laravel/pint": "^1.32",
+        "nunomaduro/collision": "^8.9.5",
+        "orchestra/testbench": "^10.12|^11.3",
+        "pestphp/pest": "^4.7",
+        "pestphp/pest-plugin-arch": "^4.0",
+        "pestphp/pest-plugin-laravel": "^4.1",
+        "phpstan/extension-installer": "^1.4"
     },
     "autoload": {
         "psr-4": {
@@ -42,7 +44,7 @@
     },
     "scripts": {
         "post-autoload-dump": "@composer run prepare",
-        "clear": "@php vendor/bin/testbench package:purge-laravel-steadfast-courier-package --ansi",
+        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
         "prepare": "@php vendor/bin/testbench package:discover --ansi",
         "build": [
             "@composer run prepare",
@@ -71,7 +73,7 @@
                 "SteadFast\\SteadFastCourierLaravelPackage\\LaravelSteadfastCourierServiceProvider"
             ],
             "aliases": {
-                "SteadFastCourier": "SteadFast\\SteadFastCourierLaravelPackage\\Facades\\SteadFastCourierLaravelPackage"
+                "SteadFastCourier": "SteadFast\\SteadFastCourierLaravelPackage\\Facades\\SteadfastCourier"
             }
         }
     },
